@@ -4,7 +4,7 @@ import { createMarkdownEngine } from "./markdown/engine";
 import { RowRenderer } from "./markdown/render";
 import { moveState } from "./migration";
 import { PreviewManager } from "./preview/previewManager";
-import { VIEW_TYPE } from "./preview/previewPanel";
+import { EDITOR_VIEW_TYPE, VIEW_TYPE } from "./preview/previewPanel";
 import { PROVIDERS } from "./providers/catalog";
 import { ProviderFactory, apiKeyFor, createProvider, isHttpsUrl, listModels, listsModelsWithoutKey } from "./providers/factory";
 import { KEY_PROVIDER_IDS, PROVIDER_IDS, isKeyProviderId, type KeyProviderId, type ProviderId } from "./providers/types";
@@ -119,6 +119,10 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     manager,
     { dispose: () => service.dispose() },
     vscode.window.registerWebviewPanelSerializer(VIEW_TYPE, manager),
+    vscode.window.registerCustomEditorProvider(EDITOR_VIEW_TYPE, manager, {
+      webviewOptions: { enableFindWidget: true, retainContextWhenHidden: false },
+      supportsMultipleEditorsPerDocument: false,
+    }),
     vscode.commands.registerCommand("markdownTranslation.openPreview", (uri?: unknown) => commands.openPreview(uri, false)),
     vscode.commands.registerCommand("markdownTranslation.openPreviewToSide", (uri?: unknown) => commands.openPreview(uri, true)),
     vscode.commands.registerCommand("markdownTranslation.retranslate", () => commands.retranslate()),

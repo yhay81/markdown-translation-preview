@@ -34,6 +34,14 @@ VS Code 1.101 以降と、次のいずれかが必要です: GitHub Copilot、An
 3. 初めて開くと API キーを求める表示が出ます。**API キーを設定** を押してキーを入力するか、GitHub Copilot を使うなら **プロバイダーを切り替え** を押して **VS Code Language Model** を選びます。
 4. 翻訳が始まります。失敗した行は、その行の **再試行** で訳し直せます。
 
+プレビューはテキストエディターの代わりにもなります。エクスプローラーで Markdown ファイルを右クリックして **Open With...** を選ぶか、開いているファイルで **View: Reopen Editor With...** を実行し、**Markdown Translation Preview** を選びます。いつもこのプレビューで開くには、設定に次のように書きます。
+
+```json
+"workbench.editorAssociations": {
+  "*.md": "markdownTranslation.editor"
+}
+```
+
 翻訳先は日本語です。ほかの言語に訳すときは、プレビューのツールバーの言語（**→ Japanese**）をクリックするか、**Markdown Translation: 翻訳先の言語を選ぶ** を実行します。主な言語の一覧から選ぶか、**別の言語...** を選んで `Swahili` や `Brazilian Portuguese` のように翻訳者に伝える言い方で入力します。選んだ言語は `markdownTranslation.targetLanguage` に保存されます。文書ごとに、フロントマターで別の言語を指定することもできます。
 
 ```markdown

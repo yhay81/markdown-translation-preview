@@ -13,6 +13,8 @@ import { saveTranslation } from "./saveTranslation";
 import { ScrollSync } from "./scrollSync";
 
 export const VIEW_TYPE = "markdownTranslation.preview";
+/** The same preview opened as an editor, for `workbench.editorAssociations`. */
+export const EDITOR_VIEW_TYPE = "markdownTranslation.editor";
 
 const RENDER_DELAY_MS = 200;
 const TRANSLATE_DELAY_MS = 1000;

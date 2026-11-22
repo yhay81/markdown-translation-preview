@@ -107,6 +107,29 @@ describe("Markdown Translation Preview", () => {
     );
   });
 
+  it("opens the preview as an editor in place of the side preview", async () => {
+    const folder = vscode.workspace.workspaceFolders?.[0]?.uri;
+    assert.ok(folder, "the test opens a workspace folder");
+    const uri = vscode.Uri.joinPath(folder, "guide.md");
+    const tabs = () => vscode.window.tabGroups.all.flatMap((group) => group.tabs.map((tab) => tab.input));
+    const sidePreviews = () =>
+      tabs().filter((input) => input instanceof vscode.TabInputWebview && input.viewType.endsWith("markdownTranslation.preview"));
+    // The test before leaves the side preview of guide.md open.
+    assert.equal(sidePreviews().length, 1);
+
+    await vscode.commands.executeCommand("vscode.openWith", uri, "markdownTranslation.editor");
+
+    assert.ok(tabs().some((input) => input instanceof vscode.TabInputCustom && input.viewType === "markdownTranslation.editor"));
+    await waitFor("the side preview to close", async () => (sidePreviews().length === 0 ? true : undefined));
+    const target = vscode.Uri.joinPath(folder, "out", "guide.editor.ja.md");
+    const exported = await waitFor("the translation", async () => {
+      await vscode.commands.executeCommand("markdownTranslation.exportTranslation", target);
+      const text = new TextDecoder().decode(await vscode.workspace.fs.readFile(target));
+      return text.includes("訳:Second item") ? text : undefined;
+    });
+    assert.ok(exported.startsWith("# 訳:Getting Started"));
+  });
+
   it("moves the settings of version 0.1 to their new names", async () => {
     const folder = vscode.workspace.workspaceFolders?.[0]?.uri;
     assert.ok(folder, "the test opens a workspace folder");

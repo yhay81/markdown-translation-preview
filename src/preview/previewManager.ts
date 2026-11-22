@@ -8,7 +8,7 @@ export interface ManagerContext extends PreviewContext {
 }
 
 /** One preview per document; also restores previews after VS Code restarts. */
-export class PreviewManager implements vscode.WebviewPanelSerializer, vscode.Disposable {
+export class PreviewManager implements vscode.WebviewPanelSerializer, vscode.CustomTextEditorProvider, vscode.Disposable {
   private readonly previews = new Map<string, TranslationPreview>();
   private active: TranslationPreview | undefined;
 
@@ -54,6 +54,16 @@ export class PreviewManager implements vscode.WebviewPanelSerializer, vscode.Dis
     } catch {
       panel.dispose();
     }
+  }
+
+  /**
+   * The translation preview as an editor of its own, so `workbench.editorAssociations` can open
+   * Markdown files straight in it. VS Code restores these tabs itself after a restart.
+   */
+  resolveCustomTextEditor(document: vscode.TextDocument, panel: vscode.WebviewPanel): void {
+    // The editor takes the document's place: a side preview of the same document gives way to it.
+    this.previews.get(document.uri.toString())?.dispose();
+    this.attach(panel, document, this.context.defaultMode());
   }
 
   refreshAll(): void {

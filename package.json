@@ -79,6 +79,21 @@
     "virtualWorkspaces": false
   },
   "contributes": {
+    "customEditors": [
+      {
+        "viewType": "markdownTranslation.editor",
+        "displayName": "%displayName%",
+        "selector": [
+          {
+            "filenamePattern": "*.md"
+          },
+          {
+            "filenamePattern": "*.markdown"
+          }
+        ],
+        "priority": "option"
+      }
+    ],
     "commands": [
       {
         "command": "markdownTranslation.openPreview",
@@ -145,12 +160,12 @@
         },
         {
           "command": "markdownTranslation.retranslate",
-          "when": "activeWebviewPanelId == 'markdownTranslation.preview'",
+          "when": "activeWebviewPanelId == 'markdownTranslation.preview' || activeCustomEditorId == 'markdownTranslation.editor'",
           "group": "navigation"
         },
         {
           "command": "markdownTranslation.exportTranslation",
-          "when": "activeWebviewPanelId == 'markdownTranslation.preview'",
+          "when": "activeWebviewPanelId == 'markdownTranslation.preview' || activeCustomEditorId == 'markdownTranslation.editor'",
           "group": "navigation"
         }
       ],
@@ -172,7 +187,7 @@
         },
         {
           "command": "markdownTranslation.exportTranslation",
-          "when": "editorLangId == markdown || activeWebviewPanelId == 'markdownTranslation.preview'"
+          "when": "editorLangId == markdown || activeWebviewPanelId == 'markdownTranslation.preview' || activeCustomEditorId == 'markdownTranslation.editor'"
         }
       ]
     },

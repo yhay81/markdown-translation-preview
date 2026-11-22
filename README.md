@@ -34,6 +34,14 @@ You need VS Code 1.101 or later, and one of these: GitHub Copilot; an API key fr
 3. The first time, the preview asks for an API key. Click **Set API Key** and enter the key, or click **Switch Provider** and choose **VS Code Language Model** to use GitHub Copilot.
 4. Translation starts. If a row fails, click **Retry** on that row.
 
+The preview can also take the place of the text editor: right-click a Markdown file in the Explorer and choose **Open With...**, or run **View: Reopen Editor With...** on an open file, and pick **Markdown Translation Preview**. To open Markdown files in it every time, add this to your settings:
+
+```json
+"workbench.editorAssociations": {
+  "*.md": "markdownTranslation.editor"
+}
+```
+
 The preview translates into Japanese. To translate into another language, click the language (**→ Japanese**) in the preview's toolbar, or run **Markdown Translation: Choose Target Language**. Pick a common language from the list, or choose **Another language...** and type any language as you would tell a translator, such as `Swahili` or `Brazilian Portuguese`. The choice is stored in `markdownTranslation.targetLanguage`. A single document can ask for another language in its front matter:
 
 ```markdown
