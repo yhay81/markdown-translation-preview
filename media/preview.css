@@ -1,5 +1,7 @@
 :root {
   --bm-gap: 28px;
+  /* The margin left and right of the rows; the edit button of a row sits in the right one. */
+  --bm-side: 20px;
   --bm-border: var(--vscode-panel-border, rgba(128, 128, 128, 0.35));
   --bm-muted: var(--vscode-descriptionForeground, rgba(128, 128, 128, 0.9));
   --bm-code-bg: var(--vscode-textCodeBlock-background, rgba(128, 128, 128, 0.12));
@@ -180,7 +182,7 @@ body {
 /* Rows */
 
 .rows {
-  padding: 16px 20px 45vh;
+  padding: 16px var(--bm-side) 45vh;
 }
 
 .row {
@@ -333,6 +335,9 @@ body.paused .skeleton span {
 
 /* Editing a translation */
 
+/* The edit button alone takes no room: it sits in the margin to the right of the translation,
+   level with its last line, so the gaps between blocks stay as in the source and nothing is
+   covered. With the badge of an edited row, the tools take a line of their own. */
 .edit-tools {
   display: flex;
   justify-content: flex-end;
@@ -344,6 +349,19 @@ body.paused .skeleton span {
   line-height: 1.4;
   opacity: 0;
   transition: opacity 0.1s;
+}
+
+.edit-tools:not(:has(.edited-badge)) {
+  position: absolute;
+  bottom: 0;
+  left: 100%;
+  justify-content: center;
+  width: var(--bm-side);
+  margin-top: 0;
+}
+
+.edit-tools:not(:has(.edited-badge)) .edit-row {
+  padding: 0;
 }
 
 .row:hover .edit-tools,
